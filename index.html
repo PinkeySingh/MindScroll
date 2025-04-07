@@ -187,30 +187,42 @@
 
     async function deletePost() {
       const postId = document.getElementById("deletePostId").value;
+      const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+    
       if (!postId) {
         alert("Please enter a Post ID to delete.");
         return;
       }
-
+    
+      if (!token) {
+        alert("You are not authorized to delete posts. Please log in.");
+        return;
+      }
+    
       try {
         const res = await fetch(`https://mindscroll-1.onrender.com/posts/${postId}`, {
-          method: "DELETE"
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
         });
-
+    
         const result = await res.json();
-
+    
         if (res.ok) {
           alert("Post deleted successfully.");
           document.getElementById("deletePostId").value = "";
         } else {
           console.error("Delete error response:", result);
-          alert("Failed to delete the post.");
+          alert(result.message || "Failed to delete the post.");
         }
       } catch (error) {
         console.error("Error while deleting post:", error);
         alert("Something went wrong. Check console for details.");
       }
     }
+    
   </script>
 </body>
 </html>
