@@ -11,9 +11,10 @@ const SECRET_KEY = "your_secret_key";
 
 app.use(cors());
 app.use(bodyParser.json());
+const mongourl = process.env.MONGO_URI
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/blog_app", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongourl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to MongoDB"))
     .catch(err => console.log("MongoDB connection error:", err));
 
